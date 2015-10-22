@@ -18,13 +18,20 @@ then SRC_REPO="scikit-learn"
 else SRC_REPO=$CIRCLE_PROJECT_REPONAME
 fi
 
+# extracting the PR title
 if [ -z $CIRCLE_PR_NUMBER ]
-then PR_MSG="MEGA NICE PR lolilol kitty [build-doc-noplot]"
+then PR_MSG=""
 else PR_MSG=$(curl "https://api.github.com/repos/$USR_NAME/$SRC_REPO/pulls/$CIRCLE_PR_NUMBER" | grep '\"title\"' | head -1) 
 fi
 
+# Logging the build version :
 echo "$USR_NAME on $SRC_REPO started build for $PR_MSG" | tee ~/log.txt
 
+# if we are on branch master, we want to build the documentation
+test "$CIRCLE_BRANCH" == "master" && PR_MSG=$PR_MSG" [build-doc]"
+
+
+# we check what kind of build we want
 case $PR_MSG in 
 *"$BUILD_DOC_PATTERN"*) 
   set -o pipefail && cd doc && make html  2>&1 | tee -a ~/log.txt
@@ -35,6 +42,6 @@ case $PR_MSG in
   if grep -q "Traceback (most recent call last):" ~/log.txt; then exit 1; else exit 0; fi
   ;;
 *)
-  exit 0
+  exit 1
   ;;
 esac
