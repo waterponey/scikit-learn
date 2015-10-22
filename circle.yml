@@ -22,12 +22,13 @@ test:
   # Grep error on the documentation
   override:
     - cat ~/log.txt && if grep -q "Traceback (most recent call last):" ~/log.txt; then false; else true; fi
+deployment:
+  push:
+    branch: master
+    commands:
+      - bash continuous_integration/push_doc.sh
 general:
   # Open the doc to the API
   artifacts:
     - "doc/_build/html"
     - "~/log.txt"
-  # Restric the build to the branch master only
-  branches:
-    only:
-       - master
