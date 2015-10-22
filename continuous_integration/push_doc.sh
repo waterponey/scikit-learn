@@ -30,7 +30,8 @@ git checkout master
 git reset --hard origin/master
 git rm -rf dev/ && rm -rf dev/
 cp -R $HOME/scikit-learn/doc/_build/html/stable dev
-git config --local user.name $USR_NAME
+git config user.email "email@domainname.ext"
+git config user.name $USR_NAME
 git add -f dev/
 git commit -m "$MSG" dev
 git push
