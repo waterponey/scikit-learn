@@ -42,6 +42,6 @@ case $PR_MSG in
   if grep -q "Traceback (most recent call last):" ~/log.txt; then exit 1; else exit 0; fi
   ;;
 *)
-  exit 1
+  exit 0
   ;;
 esac
