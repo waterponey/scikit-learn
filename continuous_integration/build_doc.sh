@@ -19,7 +19,7 @@ else SRC_REPO=$CIRCLE_PROJECT_REPONAME
 fi
 
 # extracting the PR title
-if [ -z $CI_PULL_REQUEST]
+if [ -z $CI_PULL_REQUEST ]
 then PR_MSG=""
 else 
   ORIG_REPO=$(echo $CI_PULL_REQUEST |  cut -d'/' -f4-5)
