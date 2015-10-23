@@ -6,7 +6,7 @@
 
 
 if [ -z $CIRCLE_PROJECT_USERNAME ];
-then USR_NAME="waterponey";
+then USR_NAME="sklearn-ci";
 else USR_NAME=$CIRCLE_PROJECT_USERNAME;
 fi
 
@@ -17,7 +17,7 @@ fi
 
 DOC_REPO="scikit-learn.github.io"
 
-echo "git@github.com:"$USR_NAME"/"$DOC_REPO".git"
+echo "git@github.com:scikit-learn/"$DOC_REPO".git"
 
 MSG="Pushing the docs for revision for branch:  $CIRCLE_BRANCH, commit $CIRCLE_SHA1"
 
@@ -30,8 +30,8 @@ git checkout master
 git reset --hard origin/master
 git rm -rf dev/ && rm -rf dev/
 cp -R $HOME/scikit-learn/doc/_build/html/stable dev
-git config user.email "email@domainname.ext"
-git config user.name $USR_NAME
+git config --global user.email "olivier.grisel+sklearn-ci@gmail.com"
+git config --global user.name $USR_NAME
 git add -f dev/
 git commit -m "$MSG" dev
 git push
