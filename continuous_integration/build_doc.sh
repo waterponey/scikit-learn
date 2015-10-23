@@ -9,7 +9,7 @@ BUILD_DOC_PATTERN="[build-doc]"
 BUILD_DOC_NOPLOT_PATTERN="[build-doc-noplot]"
 
 if [ -z $CIRCLE_PROJECT_USERNAME ]
-then USR_NAME="waterponey"
+then USR_NAME="sklearn-ci"
 else USR_NAME=$CIRCLE_PROJECT_USERNAME
 fi
 
@@ -19,13 +19,16 @@ else SRC_REPO=$CIRCLE_PROJECT_REPONAME
 fi
 
 # extracting the PR title
-if [ -z $CIRCLE_PR_NUMBER ]
+if [ -z $CI_PULL_REQUEST]
 then PR_MSG=""
-else PR_MSG=$(curl "https://api.github.com/repos/$USR_NAME/$SRC_REPO/pulls/$CIRCLE_PR_NUMBER" | grep '\"title\"' | head -1) 
+else 
+  ORIG_REPO=$(echo $CI_PULL_REQUEST |  cut -d'/' -f4-5)
+  PR_NUM=$(echo $CI_PULL_REQUEST |  cut -d'/' -f7)
+  PR_MSG=$(curl "https://api.github.com/repos/$ORIG_REPO/pulls/$PR_NUM" | grep '\"title\"' | head -1 | cut -d':' -f2-) 
 fi
 
 # Logging the build version :
-echo "$USR_NAME on $SRC_REPO started build for $PR_MSG" | tee ~/log.txt
+echo "$USR_NAME on $SRC_REPO started build for$PR_MSG" | tee ~/log.txt
 
 # if we are on branch master, we want to build the documentation
 test "$CIRCLE_BRANCH" == "master" && PR_MSG=$PR_MSG" [build-doc]"
