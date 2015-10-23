@@ -5,6 +5,7 @@ machine:
 dependencies:
   cache_directories:
     - "~/scikit_learn_data"
+    - "~/scikit-learn.github.io"
   # Various dependencies
   pre:
     - sudo apt-get update
