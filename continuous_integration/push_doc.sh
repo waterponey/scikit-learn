@@ -32,6 +32,7 @@ git rm -rf dev/ && rm -rf dev/
 cp -R $HOME/scikit-learn/doc/_build/html/stable dev
 git config --global user.email "olivier.grisel+sklearn-ci@gmail.com"
 git config --global user.name $USR_NAME
+git config --global push.default matching
 git add -f dev/
 git commit -m "$MSG" dev
 git push
